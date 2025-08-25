@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  auth-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "2010:2010"
+    env_file:
+      - ./.env
+    environment:
+      NODE_ENV: development
+      PORT: 2010
+      CORS_ORIGIN: "*"
+    depends_on:
+      - keycloak
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command: start-dev
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./.env
+    environment:
+      KC_DB: dev-file
+      KC_HTTP_PORT: 8080
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+
+volumes:
+  keycloak_data:
