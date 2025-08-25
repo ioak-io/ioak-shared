@@ -1,30 +1,40 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import axios from 'axios';
 import { KeycloakAdminClient } from '../services/KeycloakAdminClient';
 import { User } from '../types';
-import { Request } from 'express';
+import {
+  ApiResponse,
+  RealmParams,
+  SignupRequestBody,
+  SignupResponseBody,
+  LoginRequestBody,
+  LoginResponseBody,
+  RefreshRequestBody,
+  RefreshResponseBody,
+  LogoutRequestBody,
+  LogoutResponseBody,
+  ChangePasswordRequestBody,
+  ChangePasswordResponseBody,
+  MeResponseBody,
+} from '../types/endpoint-types';
 
-interface RealmParams {
-  realm: string;
-}
-
-type RealmRequest = Request<RealmParams>;
+type RealmRequest<P = RealmParams, ResBody = any, ReqBody = any> = Request<P, ResBody, ReqBody>;
 
 const router = Router({ mergeParams: true });
 const keycloakAdminClient = new KeycloakAdminClient();
 
-router.post('/signup', async (req: RealmRequest, res) => {
+router.post('/signup', async (req: RealmRequest<RealmParams, {}, SignupRequestBody>, res: Response<ApiResponse<SignupResponseBody>>) => {
   const { realm } = req.params;
   const user: User = req.body;
   try {
     await keycloakAdminClient.createUser(realm, user);
-    res.json({ success: true, data: 'User created successfully' });
+    res.json({ success: true, data: { data: 'User created successfully' } });
   } catch (error: any) {
     res.status(500).json({ success: false, error: process.env.NODE_ENV === 'production' ? 'User creation failed' : error.message });
   }
 });
 
-router.post('/login', async (req: RealmRequest, res) => {
+router.post('/login', async (req: RealmRequest<RealmParams, {}, LoginRequestBody>, res: Response<ApiResponse<LoginResponseBody>>) => {
   const { realm } = req.params;
   const { username, password, client_id, client_secret } = req.body;
   // Consider Keycloak's public client type or a Backend-for-Frontend (BFF) pattern to avoid sending client_secret from client-side.
@@ -48,7 +58,7 @@ router.post('/login', async (req: RealmRequest, res) => {
   }
 });
 
-router.post('/refresh', async (req: RealmRequest, res) => {
+router.post('/refresh', async (req: RealmRequest<RealmParams, {}, RefreshRequestBody>, res: Response<ApiResponse<RefreshResponseBody>>) => {
   const { realm } = req.params;
   const { refresh_token, client_id, client_secret } = req.body;
   // Consider Keycloak's public client type or a Backend-for-Frontend (BFF) pattern to avoid sending client_secret from client-side.
@@ -70,7 +80,7 @@ router.post('/refresh', async (req: RealmRequest, res) => {
   }
 });
 
-router.post('/logout', async (req: RealmRequest, res) => {
+router.post('/logout', async (req: RealmRequest<RealmParams, {}, LogoutRequestBody>, res: Response<ApiResponse<LogoutResponseBody>>) => {
   const { realm } = req.params;
   const { refresh_token, client_id, client_secret } = req.body;
   // Consider Keycloak's public client type or a Backend-for-Frontend (BFF) pattern to avoid sending client_secret from client-side.
@@ -85,13 +95,13 @@ router.post('/logout', async (req: RealmRequest, res) => {
       params,
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
-    res.json({ success: true, data: 'Logged out successfully' });
+    res.json({ success: true, data: { data: 'Logged out successfully' } });
   } catch (error: any) {
     res.status(error.response?.status || 500).json({ success: false, error: process.env.NODE_ENV === 'production' ? 'Logout failed' : error.response?.data || error.message });
   }
 });
 
-router.post('/change-password', async (req: RealmRequest, res) => {
+router.post('/change-password', async (req: RealmRequest<RealmParams, {}, ChangePasswordRequestBody>, res: Response<ApiResponse<ChangePasswordResponseBody>>) => {
   // This requires getting the user id from the token, which should be done in a middleware.
   // For now, we'll assume the user id is passed in the request body.
   const { userId, password } = req.body;
@@ -105,7 +115,7 @@ router.post('/change-password', async (req: RealmRequest, res) => {
   }
 });
 
-router.get('/me', async (req: RealmRequest, res) => {
+router.get('/me', async (req: RealmRequest<RealmParams, {}, {}>, res: Response<ApiResponse<MeResponseBody>>) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     return res.status(401).json({ success: false, error: 'Authorization header missing' });

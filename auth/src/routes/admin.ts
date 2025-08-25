@@ -1,6 +1,21 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { KeycloakAdminClient } from '../services/KeycloakAdminClient';
 import { jwtDecode } from 'jwt-decode';
+import {
+  ApiResponse,
+  CreateTeamPathParams,
+  CreateTeamRequestBody,
+  CreateTeamResponseBody,
+  DeleteTeamPathParams,
+  DeleteTeamRequestBody,
+  DeleteTeamResponseBody,
+  ManageUserToTeamPathParams,
+  AddUserToTeamRequestBody,
+  AddUserToTeamResponseBody,
+  RemoveUserFromTeamRequestBody,
+  RemoveUserFromTeamResponseBody,
+  GroupPayload,
+} from '../types/endpoint-types';
 
 const router = Router({ mergeParams: true });
 const keycloakAdminClient = new KeycloakAdminClient();
@@ -35,8 +50,8 @@ const isAdmin = (req: Request, res: Response, next: NextFunction) => {
 
 router.use(isAdmin);
 
-router.post('/team/:teamName', async (req, res) => {
-  const { realm, teamName } = req.params as { realm: string, teamName: string };
+router.post('/team/:teamName', async (req: Request<CreateTeamPathParams, {}, CreateTeamRequestBody>, res: Response<ApiResponse<CreateTeamResponseBody>>) => {
+  const { realm, teamName } = req.params;
   const { clientId, roles: desiredRoles, groups: desiredGroups } = req.body;
 
   // Validate teamName
@@ -49,7 +64,7 @@ router.post('/team/:teamName', async (req, res) => {
 
     // --- Handle Groups ---
     const existingGroups = await keycloakAdminClient.getGroupsByPrefix(realm, teamNamePrefix);
-    const desiredGroupNames = desiredGroups.map((g: any) => `${teamNamePrefix}${g.name}`);
+    const desiredGroupNames = desiredGroups.map((g: GroupPayload) => `${teamNamePrefix}${g.name}`);
 
     // Delete groups no longer desired
     for (const existingGroup of existingGroups) {
@@ -116,14 +131,21 @@ router.post('/team/:teamName', async (req, res) => {
       }
     }
 
-    res.json({ success: true, data: 'Team, groups, and roles managed successfully', createdRoles: desiredRoleNames, createdGroups: desiredGroups.map((g: any) => ({ name: `${teamNamePrefix}${g.name}`, roles: g.roles.map((r: string) => `${teamNamePrefix}${r}`) })) });
+    res.json({
+      success: true,
+      data: {
+        data: 'Team, groups, and roles managed successfully',
+        createdRoles: desiredRoleNames,
+        createdGroups: desiredGroups.map((g) => ({ name: `${teamNamePrefix}${g.name}`, roles: g.roles.map((r) => `${teamNamePrefix}${r}`) }))
+      }
+    });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
-router.delete('/team/:teamName', async (req, res) => {
-  const { realm, teamName } = req.params as { realm: string, teamName: string };
+router.delete('/team/:teamName', async (req: Request<DeleteTeamPathParams, {}, DeleteTeamRequestBody>, res: Response<ApiResponse<DeleteTeamResponseBody>>) => {
+  const { realm, teamName } = req.params;
   const { clientId } = req.body;
   try {
     const groups = await keycloakAdminClient.getGroupsByPrefix(realm, `${teamName}-`);
@@ -138,14 +160,14 @@ router.delete('/team/:teamName', async (req, res) => {
       await keycloakAdminClient.deleteRole(realm, clientId, role.name);
       deletedRoles.push(role.name);
     }
-    res.json({ success: true, data: 'Teams and roles deleted successfully', deletedGroups, deletedRoles });
+    res.json({ success: true, data: { data: 'Teams and roles deleted successfully', deletedGroups, deletedRoles } });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
-router.post('/team/:teamName/users/:userId', async (req, res) => {
-  const { realm, teamName, userId } = req.params as { realm: string, teamName: string, userId: string };
+router.post('/team/:teamName/users/:userId', async (req: Request<ManageUserToTeamPathParams, {}, AddUserToTeamRequestBody>, res: Response<ApiResponse<AddUserToTeamResponseBody>>) => {
+  const { realm, teamName, userId } = req.params;
   const groupNames: string[] = req.body;
   try {
     for (const groupName of groupNames) {
@@ -157,14 +179,14 @@ router.post('/team/:teamName/users/:userId', async (req, res) => {
       const group = await keycloakAdminClient.getGroupByName(realm, processedGroupName);
       await keycloakAdminClient.assignUserToGroup(realm, userId, group.id);
     }
-    res.json({ success: true, data: 'User added to teams successfully' });
+    res.json({ success: true, data: { data: 'User added to teams successfully' } });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
-router.delete('/team/:teamName/users/:userId', async (req, res) => {
-  const { realm, teamName, userId } = req.params as { realm: string, teamName: string, userId: string };
+router.delete('/team/:teamName/users/:userId', async (req: Request<ManageUserToTeamPathParams, {}, RemoveUserFromTeamRequestBody>, res: Response<ApiResponse<RemoveUserFromTeamResponseBody>>) => {
+  const { realm, teamName, userId } = req.params;
   const groupNames: string[] = req.body;
   try {
     for (const groupName of groupNames) {
@@ -176,7 +198,7 @@ router.delete('/team/:teamName/users/:userId', async (req, res) => {
       const group = await keycloakAdminClient.getGroupByName(realm, processedGroupName);
       await keycloakAdminClient.removeUserFromGroup(realm, userId, group.id);
     }
-    res.json({ success: true, data: 'User removed from teams successfully' });
+    res.json({ success: true, data: { data: 'User removed from teams successfully' } });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }
