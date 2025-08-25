@@ -22,7 +22,7 @@ This service provides authentication and team management for a multi-tenant SaaS
     ```
     KEYCLOAK_URL=http://localhost:8080
     KEYCLOAK_ADMIN_USER=admin
-    KEYCLOAK_ADMIN_PASS=admin
+    KEYCLOAK_ADMIN_PASSWORD=admin
     ```
 
 ## Running the service

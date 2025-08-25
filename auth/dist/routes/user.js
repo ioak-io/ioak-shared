@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const axios_1 = __importDefault(require("axios"));
 const KeycloakAdminClient_1 = require("../services/KeycloakAdminClient");
-const router = (0, express_1.Router)();
+const router = (0, express_1.Router)({ mergeParams: true });
 const keycloakAdminClient = new KeycloakAdminClient_1.KeycloakAdminClient();
 router.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { realm } = req.params;

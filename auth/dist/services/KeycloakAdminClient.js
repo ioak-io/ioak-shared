@@ -18,7 +18,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const keycloakUrl = process.env.KEYCLOAK_URL;
 const adminUser = process.env.KEYCLOAK_ADMIN_USER;
-const adminPass = process.env.KEYCLOAK_ADMIN_PASS;
+const adminPass = process.env.KEYCLOAK_ADMIN_PASSWORD;
 class KeycloakAdminClient {
     constructor() {
         this.accessToken = null;

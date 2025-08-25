@@ -1,0 +1,414 @@
+{
+	"info": {
+		"_postman_id": "a3a6a8be-1c69-4e58-825b-b1de1b8d3f21",
+		"name": "IOAK Gateway Auth Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "client_id",
+			"value": "my-client"
+		},
+		{
+			"key": "client_secret",
+			"value": "my-client-secret"
+		}
+	],
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"testpassword\",\n    \"email\": \"test@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/{{realm}}/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+							"{{realm}}",
+							"signup"
+						]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"testpassword\",\n    \"client_id\": \"{{client_id}}\",\n    \"client_secret\": \"{{client_secret}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/{{realm}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+							"{{realm}}",
+							"login"
+						]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh_token\": \"your_refresh_token\",\n    \"client_id\": \"{{client_id}}\",\n    \"client_secret\": \"{{client_secret}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/{{realm}}/refresh",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+							"{{realm}}",
+							"refresh"
+						]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh_token\": \"your_refresh_token\",\n    \"client_id\": \"{{client_id}}\",\n    \"client_secret\": \"{{client_secret}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/{{realm}}/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+							"{{realm}}",
+							"logout"
+						]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"user_id_from_token\",\n    \"password\": \"new_password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/{{realm}}/change-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+							"{{realm}}",
+							"change-password"
+						]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/user/{{realm}}/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+							"{{realm}}",
+							"me"
+						]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Create Team",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"clientId\": \"{{client_id}}\",\n    \"roles\": [\"admin\", \"manager\"],\n    \"groups\": [\n        {\n            \"name\": \"developers\",\n            \"roles\": [\"admin\"]\n        },\n        {\n            \"name\": \"qa\",\n            \"roles\": [\"manager\"]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/{{realm}}/team/{{teamName}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+							"{{realm}}",
+							"team",
+							"{{teamName}}"
+						]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Team Successful Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/{{realm}}/team/{{teamName}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"{{realm}}",
+										"team",
+										"{{teamName}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": \"Team, groups, and roles managed successfully\",\n    \"createdRoles\": [\"new-team-admin\", \"new-team-manager\"],\n    \"createdGroups\": [\n        {\n            \"name\": \"new-team-developers\",\n            \"roles\": [\"new-team-admin\"]\n        },\n        {\n            \"name\": \"new-team-qa\",\n            \"roles\": [\"new-team-manager\"]\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Team",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"clientId\": \"{{client_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/{{realm}}/team/{{teamName}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+							"{{realm}}",
+							"team",
+							"{{teamName}}"
+						]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete Team Successful Response",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/{{realm}}/team/{{teamName}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"{{realm}}",
+										"team",
+										"{{teamName}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": \"Teams and roles deleted successfully\",\n    \"deletedGroups\": [\n        \"teamName-group1\",\n        \"teamName-group2\"\n    ],\n    \"deletedRoles\": [\n        \"teamName-role1\",\n        \"teamName-role2\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Add User to Team",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    \"teamName-group1\",\n    \"teamName-group2\"\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/{{realm}}/team/{{teamName}}/users/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+							"{{realm}}",
+							"team",
+							"{{teamName}}",
+							"users",
+							"{{userId}}"
+						]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove User from Team",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    \"teamName-group1\",\n    \"teamName-group2\"\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/{{realm}}/teams/{{teamName}}/users/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+							"{{realm}}",
+							"teams",
+							"{{teamName}}",
+							"users",
+							"{{userId}}"
+						]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

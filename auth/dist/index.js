@@ -6,14 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const mongoose_1 = __importDefault(require("mongoose"));
 const express_jwt_1 = require("express-jwt");
 const jwks_rsa_1 = __importDefault(require("jwks-rsa"));
 const user_1 = __importDefault(require("./routes/user"));
 const admin_1 = __importDefault(require("./routes/admin"));
 dotenv_1.default.config();
-const databaseUri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017";
-mongoose_1.default.connect(databaseUri, {});
 const app = (0, express_1.default)();
 // Middleware setup
 app.use(express_1.default.json({ limit: 5000000 }));
