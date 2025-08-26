@@ -59,7 +59,6 @@ services:
     restart: always
     env_file:
       - ./postgres/.env
-    environment:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
