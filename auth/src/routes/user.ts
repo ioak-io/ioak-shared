@@ -26,8 +26,15 @@ const keycloakAdminClient = new KeycloakAdminClient();
 router.post('/signup', async (req: RealmRequest<RealmParams, {}, SignupRequestBody>, res: Response<ApiResponse<SignupResponseBody>>) => {
   const { realm } = req.params;
   const user: User = req.body;
+  const { password, ...userWithoutPassword } = user;
+
   try {
-    await keycloakAdminClient.createUser(realm, user);
+    const userId = await keycloakAdminClient.createUser(realm, userWithoutPassword);
+
+    if (userId && password) {
+      await keycloakAdminClient.resetPassword(realm, userId, password);
+    }
+
     res.json({ success: true, data: { data: 'User created successfully' } });
   } catch (error: any) {
     res.status(error.response?.status || 500).json({ success: false, error: process.env.NODE_ENV === 'production' ? 'User creation failed' : error.response?.data || error.message });

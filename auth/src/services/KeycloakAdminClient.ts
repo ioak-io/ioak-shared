@@ -53,7 +53,21 @@ export class KeycloakAdminClient {
     const response = await axios.post(`${keycloakUrl}/admin/realms/${realm}/users`, user, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return response.data;
+    const locationHeader = response.headers.location;
+    const userId = locationHeader ? locationHeader.substring(locationHeader.lastIndexOf('/') + 1) : null;
+    return userId;
+  }
+
+  async getUser(realm: string, username: string) {
+    const token = await this.getAdminAccessToken();
+    const response = await axios.get(`${keycloakUrl}/admin/realms/${realm}/users?username=${username}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    if (response.data.length === 0) {
+      return null;
+    }
+    return response.data[0];
   }
 
   async deleteUser(realm: string, userId: string) {
@@ -217,4 +231,5 @@ export class KeycloakAdminClient {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
+
 }
