@@ -34,7 +34,7 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
   CMD node dist/index.js || exit 1
 
 # Expose the application port
-EXPOSE 2010
+EXPOSE 2000
 
 # Command to run the application
 CMD ["node", "dist/index.js"]

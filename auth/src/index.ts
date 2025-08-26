@@ -63,7 +63,7 @@ app.use((err: any, req: any, res: any, next: any) => {
 });
 
 // Start Server
-const PORT = process.env.PORT || 2010;
+const PORT = process.env.PORT || 2000;
 app.listen(PORT, () => {
   console.log(`Server ready at http://localhost:${PORT}`);
 });
