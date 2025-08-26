@@ -9,7 +9,7 @@ services:
     ports:
       - "2000:2000"
     env_file:
-      - ./.env
+      - .env
     environment:
       NODE_ENV: development
       PORT: 2000
