@@ -1,0 +1,103 @@
+version: "3.8"
+
+services:
+  auth-service:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "2000:2000"
+    env_file:
+      - ./auth/.env
+    environment:
+      NODE_ENV: development
+      PORT: 2000
+      CORS_ORIGIN: "*"
+    depends_on:
+      - keycloak
+    networks:
+      - ioak-network
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    command: mongod --port 27017
+    ports:
+      - "27016:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - ioak-network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    command: start --http-enabled=true --http-port=8080 --hostname-strict=false
+    restart: always
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./gateway/.env
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      KC_DB_SCHEMA: public
+      KC_PROXY_HEADERS: xforwarded
+      KC_HOSTNAME: keycloak.ioak.io
+      KC_HOSTNAME_STRICT_HTTPS: "true"
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+    depends_on:
+      - postgres
+    networks:
+      - ioak-network
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    env_file:
+      - ./gateway/.env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ioak-network
+
+  kong:
+    container_name: kong-gateway
+    build:
+      context: ./gateway
+    ports:
+      - "8000:8000"
+      - "8443:8443"
+      - "8001:8001"
+      - "8444:8444"
+    environment:
+      KONG_DATABASE: 'off'
+      KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yml
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+    networks:
+      - ioak-network
+
+volumes:
+  mongo_data:
+  keycloak_data:
+  postgres_data:
+
+networks:
+  ioak-network:
+    external: true
