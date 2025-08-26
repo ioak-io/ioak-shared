@@ -20,6 +20,17 @@ services:
     networks:
       - ioak-network
 
+  express-service:
+    build:
+      context: ./express-service
+      dockerfile: Dockerfile
+    container_name: express-service
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - ioak-network
+
   mongodb:
     image: mongo:latest
     container_name: mongodb
