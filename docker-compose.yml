@@ -67,6 +67,7 @@ services:
 
   kong:
     container_name: kong-gateway
+    restart: always
     build:
       context: ./gateway
     ports:
