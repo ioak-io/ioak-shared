@@ -1,3 +1,5 @@
 FROM kong:latest
 
+RUN luarocks install kong-plugin-openid-connect
+
 COPY kong.yml /usr/local/kong/declarative/kong.yml
