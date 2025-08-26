@@ -20,17 +20,6 @@ services:
     networks:
       - ioak-network
 
-  express-service:
-    build:
-      context: ./express-service
-      dockerfile: Dockerfile
-    container_name: express-service
-    restart: always
-    ports:
-      - "3000:3000"
-    networks:
-      - ioak-network
-
   mongodb:
     image: mongo:latest
     container_name: mongodb
@@ -73,8 +62,6 @@ services:
       KONG_ADMIN_ERROR_LOG: /dev/stderr
       KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
       KONG_PROXY_LISTEN: 0.0.0.0:8000, 0.0.0.0:8443 ssl
-      KONG_PLUGINS: "openid-connect"
-      KONG_LUA_PACKAGE_PATH: "/home/kong/.luarocks/share/lua/5.1/?.lua;;"
     networks:
       - ioak-network
 

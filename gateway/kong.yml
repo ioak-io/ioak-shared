@@ -9,24 +9,6 @@ services:
           - /auth
         strip_path: true
 
-  # - name: neuralweb-service
-  #   url: http://neuralwebservice.docker:8025
-  #   routes:
-  #     - name: neuralweb-route
-  #       paths:
-  #         - /neuralweb
-  #       strip_path: true
-  #   plugins:
-  #     - name: openid-connect
-  #       config:
-  #         issuer: http://keycloak:8080/realms/echo
-  #         client_id: kong
-  #         client_secret: some_secret_key
-  #         discovery_url: http://keycloak:8080/realms/echo/.well-known/openid-configuration
-  #         token_introspection_endpoint: http://keycloak:8080/realms/echo/protocol/openid-connect/token/introspect
-  #         realm_roles_claim: realm_access.roles
-  #         anonymous: anonymous_user
-
   - name: express-service
     url: http://express-service:3000
     routes:
@@ -34,13 +16,9 @@ services:
         paths:
           - /express
         strip_path: true
-    plugins:
-      - name: openid-connect
-        config:
-          issuer: http://keycloak:8080/realms/echo
-          client_id: kong
-          client_secret: some_secret_key
-          discovery_url: http://keycloak:8080/realms/echo/.well-known/openid-configuration
-          token_introspection_endpoint: http://keycloak:8080/realms/echo/protocol/openid-connect/token/introspect
-          realm_roles_claim: realm_access.roles
-          anonymous: anonymous_user # Optional: A consumer to authenticate unauthenticated requests as.
+# - name: neuralweb-service
+#   url: http://neuralwebservice.docker:8025
+#   routes:
+#   - name: neuralweb-route
+#     paths:
+#     - /neuralweb
