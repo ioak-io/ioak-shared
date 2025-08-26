@@ -39,18 +39,13 @@ services:
     ports:
       - "8080:8080"
     env_file:
-      - keycloak/.env
+      - ./keycloak/.env
     environment:
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
-      KC_DB_USERNAME: ${POSTGRES_USER}
-      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       KC_DB_SCHEMA: public
       KC_PROXY_HEADERS: xforwarded
       KC_HOSTNAME: keycloak.ioak.io
       KC_HOSTNAME_STRICT_HTTPS: "true"
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
     depends_on:
       - postgres
     networks:
@@ -63,11 +58,8 @@ services:
     container_name: postgres
     restart: always
     env_file:
-      - keycloak/.env
+      - ./postgres/.env
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
