@@ -2,11 +2,12 @@ _format_version: "1.1"
 
 services:
 - name: auth-service
-  url: http://auth-service:3000
+  url: http://auth-service:2000
   routes:
   - name: auth-route
     paths:
     - /auth
+    strip_path: true
 # - name: neuralweb-service
 #   url: http://neuralwebservice.docker:8025
 #   routes:

@@ -5,6 +5,7 @@ services:
     build:
       context: ./auth
       dockerfile: Dockerfile
+    container_name: auth-service
     restart: always
     ports:
       - "2000:2000"
