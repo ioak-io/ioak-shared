@@ -49,6 +49,7 @@ export class KeycloakAdminClient {
 
   async createUser(realm: string, user: any) {
     const token = await this.getAdminAccessToken();
+    console.log(`${keycloakUrl}/admin/realms/${realm}/users`, token)
     const response = await axios.post(`${keycloakUrl}/admin/realms/${realm}/users`, user, {
       headers: { Authorization: `Bearer ${token}` },
     });
