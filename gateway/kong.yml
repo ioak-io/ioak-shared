@@ -1,35 +1,16 @@
 _format_version: "1.1"
 
-_certificates:
-- id: my-cert
-  cert: |
-    -----BEGIN CERTIFICATE-----
-    MIIDIDCCAgmgAwIBAgIULw9e5e7rG2f6n3j2m7j0m9j0m9j0m9j0m9j0m9j0m9j0
-    ... (your certificate content here) ...
-    -----END CERTIFICATE-----
-  key: |
-    -----BEGIN PRIVATE KEY-----
-    MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCEmX7u0x+2t8t5
-    ... (your private key content here) ...
-    -----END PRIVATE KEY-----
-
 services:
 - name: auth-service
-  url: https://auth-service:2000
+  url: http://auth-service:2000
   routes:
   - name: auth-route
     paths:
     - /auth
     strip_path: true
-    protocols:
-    - http
-    - https
-    https_redirect_status_code: 426
-    snis:
-    - auth-service
-  tags:
-  - my-cert
-
-snis:
-- name: auth-service
-  certificate: my-cert
+# - name: neuralweb-service
+#   url: http://neuralwebservice.docker:8025
+#   routes:
+#   - name: neuralweb-route
+#     paths:
+#     - /neuralweb
