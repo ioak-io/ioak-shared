@@ -232,4 +232,10 @@ export class KeycloakAdminClient {
     });
   }
 
+  async enableUser(realm: string, userId: string) {
+    const token = await this.getAdminAccessToken();
+    await axios.put(`${keycloakUrl}/admin/realms/${realm}/users/${userId}`, { enabled: true }, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
 }

@@ -35,6 +35,10 @@ router.post('/signup', async (req: RealmRequest<RealmParams, {}, SignupRequestBo
       await keycloakAdminClient.resetPassword(realm, userId, password);
     }
 
+    if (userId) {
+      await keycloakAdminClient.enableUser(realm, userId);
+    }
+
     res.json({ success: true, data: { data: 'User created successfully' } });
   } catch (error: any) {
     res.status(error.response?.status || 500).json({ success: false, error: process.env.NODE_ENV === 'production' ? 'User creation failed' : error.response?.data || error.message });
