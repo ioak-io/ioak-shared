@@ -22,8 +22,7 @@ services:
         enabled: true
         config:
           key_claim_name: kid
-          claims_to_verify:
-            - exp
+          claims_to_verify: [exp]
       - name: request-transformer
         config:
           add:
