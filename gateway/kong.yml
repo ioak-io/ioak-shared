@@ -23,12 +23,6 @@ services:
           key_claim_name: azp
           claims_to_verify:
             - exp
-            - iss
-            - aud
-          allowed_iss:
-            - "https://keycloak.ioak.io/realms/echo"
-          allowed_aud:
-            - "account"
       - name: request-transformer
         config:
           add:
