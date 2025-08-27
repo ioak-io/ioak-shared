@@ -1,5 +1,5 @@
 import express from 'express';
-import { jwtClaims } from './middleware/jwtClaims';
+import { getClaims, verifyAndGetClaims } from './middleware/jwtClaims';
 
 const app = express();
 const port = 3000;
@@ -9,8 +9,16 @@ app.get("/", (req, res) => {
     message: "hello"
   });
 });
-app.get("/healthcheck", jwtClaims, (req, res) => {
-  console.log("entered health check");
+
+app.get("/healthcheck", verifyAndGetClaims, (req, res) => {
+  res.json({
+    message: "Claims validated and extracted successfully",
+    claims: req.claims,
+    headers: req.headers
+  });
+});
+
+app.get("/healthcheck/no-verify", getClaims, (req, res) => {
   res.json({
     message: "Claims extracted successfully",
     claims: req.claims,
