@@ -51,3 +51,13 @@ To deploy the gateway to a cloud VM, you can build the Docker image and run it o
    ```bash
    docker run -d --name ioak-gateway -p 8000:8000 -p 8443:8443 -p 8001:8001 -p 8444:8444 ioak-gateway
    ```
+
+## Keycloak public key
+https://keycloak.ioak.io/realms/echo/.well-known/openid-configuration
+find jwks_uri
+https://keycloak.ioak.io/realms/echo/protocol/openid-connect/certs
+curl -s https://keycloak.ioak.io/realms/echo/protocol/openid-connect/certs \
+  | jq -r '.keys[0].x5c[0]' \
+  | sed 's/.\{64\}/&\n/g' \
+  | awk 'BEGIN{print "-----BEGIN CERTIFICATE-----"}{print}END{print "-----END CERTIFICATE-----"}' \
+  | openssl x509 -pubkey -noout > keycloak.pem

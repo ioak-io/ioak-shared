@@ -4,7 +4,7 @@ const port = 3000;
 
 app.get('/', (req, res) => {
   console.log('Headers received:', req.headers);
-  res.send('Hello from Express Service! Check your logs for headers.');
+  res.send(req.headers);
 });
 
 app.listen(port, () => {

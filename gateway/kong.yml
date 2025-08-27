@@ -1,4 +1,5 @@
-_format_version: "1.1"
+_format_version: "3.0"
+_transform: true
 
 services:
   - name: auth-service
@@ -16,9 +17,35 @@ services:
         paths:
           - /express
         strip_path: true
-# - name: neuralweb-service
-#   url: http://neuralwebservice.docker:8025
-#   routes:
-#   - name: neuralweb-route
-#     paths:
-#     - /neuralweb
+    plugins:
+      - name: jwt
+        config:
+          key_claim_name: azp
+          claims_to_verify:
+            - exp
+      - name: request-transformer
+        config:
+          add:
+            headers:
+              - "x-jwt-iss:$(jwt_claim_iss)"
+              - "x-jwt-aud:$(jwt_claim_aud)"
+              - "x-jwt-azp:$(jwt_claim_azp)"
+              - "x-jwt-sub:$(jwt_claim_sub)"
+              - "x-jwt-typ:$(jwt_claim_typ)"
+              - "x-jwt-sid:$(jwt_claim_sid)"
+
+consumers:
+  - username: keycloak-consumer
+    jwt_secrets:
+      - algorithm: RS256
+        key: echo
+        rsa_public_key: |
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuGRG8ZiYLD4eHmECcSZR
+          xl5n19Y8vvpcqQwl/9+InI/yCxrVB9DX/dPeWXDsgeIpm/B2ZQAFBdh5IaWTCooH
+          c2PBcksoidxaCM7b+sq2mo/Ay+kUnQM7I5PYELjKHIbzYjlmozF2ilvsxph/YwlV
+          L/GAb9eu0vZnd7lCbrIknGE/qvQxSCj2vl4Qal0SyEXz4hklAxf8zInK2LgOlnxq
+          uMt/MpY4CC9AVNicd7cBqckR4eU4qN0zXQB0USUkekHZImi24eZxqpel+mMMwAt0
+          AdGg58lmWbfCcYfNVjBYkt6NkJKDu9WX2/mJVF6SGhjOyde/t0dU3oNk9ryNgzjW
+          oQIDAQAB
+          -----END PUBLIC KEY-----
