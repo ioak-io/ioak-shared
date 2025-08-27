@@ -4,7 +4,13 @@ import jwtClaims from './middleware/jwtClaims';
 const app = express();
 const port = 3000;
 
-app.get("/", jwtClaims, (req, res) => {
+app.get("/", (req, res) => {
+  res.json({
+    message: "hello"
+  });
+});
+app.get("/healthcheck", jwtClaims, (req, res) => {
+  console.log("entered health check");
   res.json({
     message: "Claims extracted successfully",
     claims: req.claims,
