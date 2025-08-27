@@ -19,8 +19,9 @@ services:
         strip_path: true
     plugins:
       - name: jwt
+        enabled: true
         config:
-          key_claim_name: azp
+          key_claim_name: kid
           claims_to_verify:
             - exp
       - name: request-transformer
