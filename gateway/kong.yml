@@ -23,19 +23,6 @@ services:
           key_claim_name: azp
           claims_to_verify:
             - exp
-      - name: request-transformer
-        config:
-          add:
-            headers:
-              - "x-jwt-iss:$(jwt_claim_iss)"
-              - "x-jwt-aud:$(jwt_claim_aud)"
-              - "x-jwt-azp:$(jwt_claim_azp)"
-              - "x-jwt-sub:$(jwt_claim_sub)"
-              - "x-jwt-typ:$(jwt_claim_typ)"
-              - "x-jwt-sid:$(jwt_claim_sid)"
-          remove:
-            headers:
-              - authorization
 
 consumers:
   - username: jwt-for-echo
