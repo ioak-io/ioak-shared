@@ -1,10 +1,11 @@
-const jwt = require("jsonwebtoken");
-const fs = require("fs");
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import fs from 'fs';
 
 // Load the Keycloak public key (RS256)
-const publicKey = fs.readFileSync("./keycloak.pem", "utf8");
+const publicKey = fs.readFileSync(__dirname + "/keycloak.pem", "utf8");
 
-function jwtClaims(req, res, next) {
+function jwtClaims(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers["authorization"];
   if (!authHeader) {
     return res.status(401).json({ error: "No Authorization header" });
@@ -23,8 +24,8 @@ function jwtClaims(req, res, next) {
     req.claims = decoded;
     next();
   } catch (err) {
-    return res.status(401).json({ error: "Invalid token", details: err.message });
+    return res.status(401).json({ error: "Invalid token", details: (err as Error).message });
   }
 }
 
-module.exports = jwtClaims;
+export default jwtClaims;
