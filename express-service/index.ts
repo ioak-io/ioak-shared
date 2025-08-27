@@ -1,5 +1,5 @@
 import express from 'express';
-import jwtClaims from './middleware/jwtClaims';
+import { jwtClaims } from './middleware/jwtClaims';
 
 const app = express();
 const port = 3000;

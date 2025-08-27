@@ -1,31 +1,27 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import fs from 'fs';
+import jwksClient from "jwks-rsa";
+import jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
 
-// Load the Keycloak public key (RS256)
-const publicKey = fs.readFileSync(__dirname + "/keycloak.pem", "utf8");
+const client = jwksClient({
+  jwksUri: "https://keycloak.ioak.io/realms/echo/protocol/openid-connect/certs",
+});
 
-function jwtClaims(req: Request, res: Response, next: NextFunction) {
-  const authHeader = req.headers["authorization"];
-  if (!authHeader) {
-    return res.status(401).json({ error: "No Authorization header" });
-  }
-
-  const parts = authHeader.split(" ");
-  if (parts.length !== 2 || parts[0].toLowerCase() !== "bearer") {
-    return res.status(401).json({ error: "Invalid Authorization header format" });
-  }
-
-  const token = parts[1];
-
-  try {
-    // Verify the signature
-    const decoded = jwt.verify(token, publicKey, { algorithms: ["RS256"] });
-    req.claims = decoded;
-    next();
-  } catch (err) {
-    return res.status(401).json({ error: "Invalid token", details: (err as Error).message });
-  }
+function getKey(header: any, callback: any) {
+  client.getSigningKey(header.kid, (err, key) => {
+    if (err) return callback(err);
+    const signingKey = key?.getPublicKey();
+    callback(null, signingKey);
+  });
 }
 
-export default jwtClaims;
+export function jwtClaims(req: Request, res: Response, next: NextFunction) {
+  const authHeader = req.headers["authorization"];
+  if (!authHeader) return res.status(401).json({ error: "No Authorization header" });
+
+  const token = authHeader.split(" ")[1];
+  jwt.verify(token, getKey, { algorithms: ["RS256"] }, (err, decoded) => {
+    if (err) return res.status(401).json({ error: "Invalid token", details: err.message });
+    (req as any).claims = decoded;
+    next();
+  });
+}
