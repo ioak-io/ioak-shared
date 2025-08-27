@@ -1,5 +1,5 @@
 const express = require("express");
-const jwtClaims = require("./jwtClaims");
+const jwtClaims = require("./middleware/jwtClaims");
 
 const app = express();
 const port = 3000;
