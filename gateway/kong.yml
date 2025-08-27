@@ -36,16 +36,17 @@ services:
 
 consumers:
   - username: keycloak-consumer
-    jwt_secrets:
-      - algorithm: RS256
-        key: echo
-        rsa_public_key: |
-          -----BEGIN PUBLIC KEY-----
-          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuGRG8ZiYLD4eHmECcSZR
-          xl5n19Y8vvpcqQwl/9+InI/yCxrVB9DX/dPeWXDsgeIpm/B2ZQAFBdh5IaWTCooH
-          c2PBcksoidxaCM7b+sq2mo/Ay+kUnQM7I5PYELjKHIbzYjlmozF2ilvsxph/YwlV
-          L/GAb9eu0vZnd7lCbrIknGE/qvQxSCj2vl4Qal0SyEXz4hklAxf8zInK2LgOlnxq
-          uMt/MpY4CC9AVNicd7cBqckR4eU4qN0zXQB0USUkekHZImi24eZxqpel+mMMwAt0
-          AdGg58lmWbfCcYfNVjBYkt6NkJKDu9WX2/mJVF6SGhjOyde/t0dU3oNk9ryNgzjW
-          oQIDAQAB
-          -----END PUBLIC KEY-----
+
+jwt_secrets:
+  - algorithm: RS256
+    key: echo
+    rsa_public_key: |
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuGRG8ZiYLD4eHmECcSZR
+      xl5n19Y8vvpcqQwl/9+InI/yCxrVB9DX/dPeWXDsgeIpm/B2ZQAFBdh5IaWTCooH
+      c2PBcksoidxaCM7b+sq2mo/Ay+kUnQM7I5PYELjKHIbzYjlmozF2ilvsxph/YwlV
+      L/GAb9eu0vZnd7lCbrIknGE/qvQxSCj2vl4Qal0SyEXz4hklAxf8zInK2LgOlnxq
+      uMt/MpY4CC9AVNicd7cBqckR4eU4qN0zXQB0USUkekHZImi24eZxqpel+mMMwAt0
+      AdGg58lmWbfCcYfNVjBYkt6NkJKDu9WX2/mJVF6SGhjOyde/t0dU3oNk9ryNgzjW
+      oQIDAQAB
+      -----END PUBLIC KEY-----
