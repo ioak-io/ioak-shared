@@ -24,6 +24,20 @@ services:
           claims_to_verify:
             - exp
 
+  - name: fastapi-service
+    url: http://fastapi-service:3010
+    routes:
+      - name: fastapi-route
+        paths:
+          - /fastapi
+        strip_path: true
+    plugins:
+      - name: jwt
+        config:
+          key_claim_name: azp
+          claims_to_verify:
+            - exp
+
 consumers:
   - username: jwt-for-echo
 

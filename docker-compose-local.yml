@@ -31,6 +31,17 @@ services:
     networks:
       - ioak-network
 
+  fastapi-service:
+    build:
+      context: ./fastapi-service
+      dockerfile: Dockerfile
+    container_name: fastapi-service
+    restart: always
+    ports:
+      - "3010:3010"
+    networks:
+      - ioak-network
+
   mongodb:
     image: mongo:latest
     container_name: mongodb
