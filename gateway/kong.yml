@@ -19,33 +19,25 @@ services:
         strip_path: true
     plugins:
       - name: jwt
-        enabled: true
         config:
-          key_claim_name: kid
+          key_claim_name: azp
           claims_to_verify: [exp]
-      - name: request-transformer
-        config:
-          add:
-            headers:
-              - "x-jwt-iss:$(jwt_claim_iss)"
-              - "x-jwt-aud:$(jwt_claim_aud)"
-              - "x-jwt-azp:$(jwt_claim_azp)"
-              - "x-jwt-sub:$(jwt_claim_sub)"
-              - "x-jwt-typ:$(jwt_claim_typ)"
-              - "x-jwt-sid:$(jwt_claim_sid)"
+          secret_is_base64: false
 
 consumers:
-  - username: keycloak-consumer
-    jwt_secrets:
-      - algorithm: RS256
-        key: echo
-        rsa_public_key: |
-          -----BEGIN PUBLIC KEY-----
-          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuGRG8ZiYLD4eHmECcSZR
-          xl5n19Y8vvpcqQwl/9+InI/yCxrVB9DX/dPeWXDsgeIpm/B2ZQAFBdh5IaWTCooH
-          c2PBcksoidxaCM7b+sq2mo/Ay+kUnQM7I5PYELjKHIbzYjlmozF2ilvsxph/YwlV
-          L/GAb9eu0vZnd7lCbrIknGE/qvQxSCj2vl4Qal0SyEXz4hklAxf8zInK2LgOlnxq
-          uMt/MpY4CC9AVNicd7cBqckR4eU4qN0zXQB0USUkekHZImi24eZxqpel+mMMwAt0
-          AdGg58lmWbfCcYfNVjBYkt6NkJKDu9WX2/mJVF6SGhjOyde/t0dU3oNk9ryNgzjW
-          oQIDAQAB
-          -----END PUBLIC KEY-----
+  - username: echo
+
+jwt_secrets:
+  - consumer: echo
+    key: echo
+    algorithm: RS256
+    rsa_public_key: |
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoR3TxySL0FSM2rALzQ3J
+      BrEK2yWDy/pkCaLY2PdooNh/USQdJIQ4dHlgahB85SnSHF8/lS4qfS4VSJPUbUnc
+      tT4OdpUAJfcAErldbTcCeR8zaaGKUMekb4XoO1GMS5up0ymjTF1PJB4/YxUMAOL1
+      4l5plH6/PB1vJWtFQQhTiFJafoz0EWLFAhRvpn0YEayUQ57yO6dY8qVGz12JDNeM
+      AUA3vScnuS5tNxPOyI+sjgwM5W9EMjLTzW/iLNmapmCvkektUngxPjJQJIrjQ1aK
+      BJGGzrNaj3mRpfvi4cmPlAM9ph//J85GtViPKGKONQ3+wlDiK+Yq9Xs5lLDsde32
+      YQIDAQAB
+      -----END PUBLIC KEY-----
