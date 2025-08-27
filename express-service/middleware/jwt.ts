@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import jwksClient from "jwks-rsa";
+import { JwtClaims } from "../types/JwtClaimTypes";
 
 // Configure JWKS client for your realm
 const client = jwksClient({
@@ -30,7 +31,7 @@ export function verifyAndGetClaims(req: Request, res: Response, next: NextFuncti
     if (err) {
       return res.status(401).json({ error: "Invalid token", details: err.message });
     }
-    (req as any).claims = decoded;
+    req.claims = decoded as JwtClaims;
     next();
   });
 }
@@ -49,7 +50,7 @@ export function getClaims(req: Request, res: Response, next: NextFunction) {
     const decoded = jwt.decode(token);
     if (!decoded) return res.status(400).json({ error: "Failed to decode JWT" });
 
-    (req as any).claims = decoded;
+    req.claims = decoded as JwtClaims;
     next();
   } catch (err) {
     return res.status(400).json({ error: "Error decoding token", details: (err as Error).message });

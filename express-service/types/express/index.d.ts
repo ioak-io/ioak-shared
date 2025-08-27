@@ -1,5 +1,9 @@
-declare namespace Express {
-  export interface Request {
-    claims?: any;
+import { JwtClaims } from "../JwtClaimTypes";
+
+declare global {
+  namespace Express {
+    interface Request {
+      claims?: JwtClaims;
+    }
   }
 }
