@@ -10,12 +10,12 @@ services:
           - /auth
         strip_path: true
 
-  - name: sparkles-service
+  - name: sparkles-team-service
     url: http://host.docker.internal:2010
     routes:
-      - name: sparkles-route
+      - name: sparkles-team-route
         paths:
-          - /sparkles
+          - /sparkles/team
         strip_path: true
     plugins:
       - name: jwt
