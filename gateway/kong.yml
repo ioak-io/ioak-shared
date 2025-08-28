@@ -69,3 +69,24 @@ jwt_secrets:
       1f9/km4s22u2hLn8jx1Qv+UmwQxWA4K1DkiZ3uJoknRPUNtH+5OMROp4eajaP0zr
       qwIDAQAB
       -----END PUBLIC KEY-----
+
+plugins:
+  - name: cors
+    config:
+      origins:
+        - "*"
+      methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+      headers:
+        - Accept
+        - Authorization
+        - Content-Type
+        - X-Requested-With
+      exposed_headers:
+        - X-Custom-Header
+      credentials: true
+      max_age: 3600
