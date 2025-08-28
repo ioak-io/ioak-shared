@@ -53,10 +53,10 @@ To deploy the gateway to a cloud VM, you can build the Docker image and run it o
    ```
 
 ## Keycloak public key
-https://keycloak.ioak.io/realms/echo/.well-known/openid-configuration
+https://keycloak.ioak.io/realms/sparkles/.well-known/openid-configuration
 find jwks_uri
-https://keycloak.ioak.io/realms/echo/protocol/openid-connect/certs
-curl -s https://keycloak.ioak.io/realms/echo/protocol/openid-connect/certs \
+https://keycloak.ioak.io/realms/sparkles/protocol/openid-connect/certs
+curl -s https://keycloak.ioak.io/realms/sparkles/protocol/openid-connect/certs \
   | jq -r '.keys[0].x5c[0]' \
   | sed 's/.\{64\}/&\n/g' \
   | awk 'BEGIN{print "-----BEGIN CERTIFICATE-----"}{print}END{print "-----END CERTIFICATE-----"}' \

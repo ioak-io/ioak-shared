@@ -10,7 +10,7 @@ services:
     ports:
       - "2000:2000"
     env_file:
-      - ./auth/.env
+      - ./auth-service/.env
     environment:
       NODE_ENV: development
       PORT: 2000

@@ -3,42 +3,20 @@ version: "3.3"
 services:
   auth-service:
     build:
-      context: ./auth
+      context: ./auth-service
       dockerfile: Dockerfile
     container_name: auth-service
     restart: always
     ports:
       - "2000:2000"
     env_file:
-      - ./auth/.env
+      - ./auth-service/.env
     environment:
       NODE_ENV: development
       PORT: 2000
       CORS_ORIGIN: "*"
     depends_on:
       - keycloak
-    networks:
-      - ioak-network
-
-  example-express:
-    build:
-      context: ./example-express
-      dockerfile: Dockerfile
-    container_name: example-express
-    restart: always
-    ports:
-      - "3000:3000"
-    networks:
-      - ioak-network
-
-  example-fastapi:
-    build:
-      context: ./example-fastapi
-      dockerfile: Dockerfile
-    container_name: example-fastapi
-    restart: always
-    ports:
-      - "3010:3010"
     networks:
       - ioak-network
 
