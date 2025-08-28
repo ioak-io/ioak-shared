@@ -11,7 +11,7 @@ services:
         strip_path: true
 
   - name: sparkles-team-service
-    url: http://host.docker.internal:2010
+    url: http://host.docker.internal:2011
     routes:
       - name: sparkles-team-route
         paths:
