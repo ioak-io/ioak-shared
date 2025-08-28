@@ -10,12 +10,12 @@ services:
           - /auth
         strip_path: true
 
-  - name: example-express
-    url: http://example-express:3000
+  - name: sparkles-service
+    url: http://sparkles-service:3000
     routes:
-      - name: express-route
+      - name: sparkles-route
         paths:
-          - /express
+          - /sparkles
         strip_path: true
     plugins:
       - name: jwt
@@ -24,26 +24,40 @@ services:
           claims_to_verify:
             - exp
 
-  - name: example-fastapi
-    url: http://example-fastapi:3010
-    routes:
-      - name: fastapi-route
-        paths:
-          - /fastapi
-        strip_path: true
-    plugins:
-      - name: jwt
-        config:
-          key_claim_name: azp
-          claims_to_verify:
-            - exp
+  # - name: example-express
+  #   url: http://example-express:3000
+  #   routes:
+  #     - name: express-route
+  #       paths:
+  #         - /express
+  #       strip_path: true
+  #   plugins:
+  #     - name: jwt
+  #       config:
+  #         key_claim_name: azp
+  #         claims_to_verify:
+  #           - exp
+
+  # - name: example-fastapi
+  #   url: http://example-fastapi:3010
+  #   routes:
+  #     - name: fastapi-route
+  #       paths:
+  #         - /fastapi
+  #       strip_path: true
+  #   plugins:
+  #     - name: jwt
+  #       config:
+  #         key_claim_name: azp
+  #         claims_to_verify:
+  #           - exp
 
 consumers:
-  - username: jwt-for-echo
+  - username: jwt-for-sparkles
 
 jwt_secrets:
-  - consumer: jwt-for-echo
-    key: echo # must match `azp` in token
+  - consumer: jwt-for-sparkles
+    key: sparkles # must match `azp` in token
     algorithm: RS256
     rsa_public_key: |
       -----BEGIN PUBLIC KEY-----

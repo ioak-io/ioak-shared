@@ -20,28 +20,6 @@ services:
     networks:
       - ioak-network
 
-  example-express:
-    build:
-      context: ./example-express
-      dockerfile: Dockerfile
-    container_name: example-express
-    restart: always
-    ports:
-      - "3000:3000"
-    networks:
-      - ioak-network
-
-  example-fastapi:
-    build:
-      context: ./example-fastapi
-      dockerfile: Dockerfile
-    container_name: example-fastapi
-    restart: always
-    ports:
-      - "3010:3010"
-    networks:
-      - ioak-network
-
   mongodb:
     image: mongo:latest
     container_name: mongodb
