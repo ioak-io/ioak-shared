@@ -33,11 +33,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/user/{{realm}}/signup",
+							"raw": "{{baseUrl}}/auth/user/{{realm}}/signup",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"auth",
 								"user",
 							"{{realm}}",
 							"signup"
@@ -61,11 +62,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/user/{{realm}}/login",
+							"raw": "{{baseUrl}}/auth/user/{{realm}}/login",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"auth",
 								"user",
 							"{{realm}}",
 							"login"
@@ -89,11 +91,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/user/{{realm}}/refresh",
+							"raw": "{{baseUrl}}/auth/user/{{realm}}/refresh",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"auth",
 								"user",
 							"{{realm}}",
 							"refresh"
@@ -117,11 +120,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/user/{{realm}}/logout",
+							"raw": "{{baseUrl}}/auth/user/{{realm}}/logout",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"auth",
 								"user",
 							"{{realm}}",
 							"logout"
@@ -151,11 +155,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/user/{{realm}}/change-password",
+							"raw": "{{baseUrl}}/auth/user/{{realm}}/change-password",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"auth",
 								"user",
 							"{{realm}}",
 							"change-password"
@@ -176,11 +181,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/user/{{realm}}/me",
+							"raw": "{{baseUrl}}/auth/user/{{realm}}/me",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"auth",
 								"user",
 							"{{realm}}",
 							"me"
@@ -215,11 +221,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/admin/{{realm}}/team/{{teamName}}",
+							"raw": "{{baseUrl}}/auth/admin/{{realm}}/team/{{teamName}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"auth",
 								"admin",
 							"{{realm}}",
 							"team",
@@ -238,11 +245,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{baseUrl}}/admin/{{realm}}/team/{{teamName}}",
+									"raw": "{{baseUrl}}/auth/admin/{{realm}}/team/{{teamName}}",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
+										"auth",
 										"admin",
 										"{{realm}}",
 										"team",
@@ -285,11 +293,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/admin/{{realm}}/team/{{teamName}}",
+							"raw": "{{baseUrl}}/auth/admin/{{realm}}/team/{{teamName}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"auth",
 								"admin",
 							"{{realm}}",
 							"team",
@@ -308,11 +317,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{baseUrl}}/admin/{{realm}}/team/{{teamName}}",
+									"raw": "{{baseUrl}}/auth/admin/{{realm}}/team/{{teamName}}",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
+										"auth",
 										"admin",
 										"{{realm}}",
 										"team",
@@ -355,11 +365,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/admin/{{realm}}/team/{{teamName}}/users/{{userId}}",
+							"raw": "{{baseUrl}}/auth/admin/{{realm}}/team/{{teamName}}/users/{{userId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"auth",
 								"admin",
 							"{{realm}}",
 							"team",
@@ -392,11 +403,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/admin/{{realm}}/teams/{{teamName}}/users/{{userId}}",
+							"raw": "{{baseUrl}}/auth/admin/{{realm}}/teams/{{teamName}}/users/{{userId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"auth",
 								"admin",
 							"{{realm}}",
 							"teams",
