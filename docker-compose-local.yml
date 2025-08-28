@@ -20,22 +20,22 @@ services:
     networks:
       - ioak-network
 
-  express-service:
+  example-express:
     build:
-      context: ./express-service
+      context: ./example-express
       dockerfile: Dockerfile
-    container_name: express-service
+    container_name: example-express
     restart: always
     ports:
       - "3000:3000"
     networks:
       - ioak-network
 
-  fastapi-service:
+  example-fastapi:
     build:
-      context: ./fastapi-service
+      context: ./example-fastapi
       dockerfile: Dockerfile
-    container_name: fastapi-service
+    container_name: example-fastapi
     restart: always
     ports:
       - "3010:3010"
