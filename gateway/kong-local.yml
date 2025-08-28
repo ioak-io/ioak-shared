@@ -1,0 +1,71 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+  - name: auth-service
+    url: http://auth-service:2000
+    routes:
+      - name: auth-route
+        paths:
+          - /auth
+        strip_path: true
+
+  - name: sparkles-service
+    url: http://localhost:3000
+    routes:
+      - name: sparkles-route
+        paths:
+          - /sparkles
+        strip_path: true
+    plugins:
+      - name: jwt
+        config:
+          key_claim_name: azp
+          claims_to_verify:
+            - exp
+
+  # - name: example-express
+  #   url: http://example-express:3000
+  #   routes:
+  #     - name: express-route
+  #       paths:
+  #         - /express
+  #       strip_path: true
+  #   plugins:
+  #     - name: jwt
+  #       config:
+  #         key_claim_name: azp
+  #         claims_to_verify:
+  #           - exp
+
+  # - name: example-fastapi
+  #   url: http://example-fastapi:3010
+  #   routes:
+  #     - name: fastapi-route
+  #       paths:
+  #         - /fastapi
+  #       strip_path: true
+  #   plugins:
+  #     - name: jwt
+  #       config:
+  #         key_claim_name: azp
+  #         claims_to_verify:
+  #           - exp
+
+consumers:
+  - username: jwt-for-sparkles
+
+jwt_secrets:
+  - consumer: jwt-for-sparkles
+    key: sparkles # must match `azp` in token
+    algorithm: RS256
+    rsa_public_key: |
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAonFsp6npYGGXd3LZlWml
+      wlIJrC0fB5fG2Jef8UE3rqQ4at4Vci2x5vDTeH5V2MpgSq/trBZ5Ng6sZzFBq4dP
+      0p69U7ER3yvmahlsqyZkyvPwT82YkpqvECzXI1565UmcNiI4XC3QLEPzPkiU04lr
+      IwswKHY9n6OA1ugduINdZB/ijHFYV3FsUg09Isgl9ObLXc9NSWSnVYX+ACGhqi2B
+      1JQGHwitXyX3m+S6RF6O9rDvbxU7lRYifKVgZlCjSe5/9qSvUY7OklWe0sm0SNou
+      obnLe2/K4mUHu+3aaahNuOeZyA943u3VV2y5tHF2IaC/q4vR0DAXhY6Y8RZWZ0aV
+      FQIDAQAB
+      -----END PUBLIC KEY-----
